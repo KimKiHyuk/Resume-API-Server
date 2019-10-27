@@ -7,6 +7,13 @@ namespace APIServer.Model {
     public class AboutMeModelDto : BaseModelDto
     {
         
+        public AboutMeModelDto(string Name, string Job, string Nationality, string Introduce) {
+            this.Name = Name;
+            this.Job = Job;
+            this.Nationality = Nationality;
+            this.Introduce = Introduce;
+        }
+
         [MaxLength(10)]
         public string Name { get; set; }
 
