@@ -7,5 +7,7 @@ namespace APIServer.Model
         [Key]
         public int Id { get; set; }
 
+        public int HashCode {get; set; }
+
     }
 }

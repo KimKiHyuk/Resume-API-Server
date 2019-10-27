@@ -14,6 +14,6 @@ namespace APIServer.Database
             // TODO: set default value
         }
 
-        public DbSet<AboutMeModelDto> AboutMe { get; set; }
+        public DbSet<AboutMeModelDto> TableAboutMe { get; set; }
     }
 }
