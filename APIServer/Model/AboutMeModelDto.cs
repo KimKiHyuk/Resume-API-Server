@@ -1,9 +1,11 @@
-namespace APIServer {
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace APIServer.Model {
+
     public class AboutMeModelDto : BaseModelDto
     {
+        [MaxLength(20)]
         public string Name { get; set; }
-        public string Job { get; set; }
-        public string Nationality { get; set; }
-        public string Introduce { get; set; }
     }
 }

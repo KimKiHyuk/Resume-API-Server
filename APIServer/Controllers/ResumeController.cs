@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using APIServer.Database;
+using APIServer.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -12,22 +14,31 @@ namespace APIServer.Controllers
     [Route("[controller]/[Action]")]
     public class ResumeController : ControllerBase
     {
-        public ResumeController()
-        {
-        }
+        private readonly DatabaseContext databaseContext;
 
+        public ResumeController(DatabaseContext databaseContext)
+        {
+            this.databaseContext = databaseContext;
+        }
 
         [HttpGet]
         [Route("{id}")]
-        public AboutMeModelDto AboutMe(int id)
+        public ActionResult<AboutMeModelDto> AboutMe(int id)
         {
-            return new AboutMeModelDto();
+            var request = this.databaseContext.AboutMe.Where(element => element.Id == id).SingleOrDefault();
+
+            if (request == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(request);
         }
 
         [HttpGet]
         public IEnumerable<AboutMeModelDto> AboutMe()
         {
-            return new List<AboutMeModelDto>() {new AboutMeModelDto(), new AboutMeModelDto()};
+            return this.databaseContext.AboutMe.ToList();
         }
 
 
@@ -36,22 +47,26 @@ namespace APIServer.Controllers
         {
             var jsonString = JsonSerializer.Serialize<AboutMeModelDto>(dto);
 
-            dto.HashCode = jsonString.GetHashCode();
+            var ret = this.databaseContext.AboutMe.Add(dto);
+            this.databaseContext.SaveChanges();
 
-            return CreatedAtAction("AboutMe", dto);
+            return CreatedAtAction("AboutMe", ret.Entity);
         }
 
         [HttpDelete]
         [Route("{id}")]
-        public ActionResult AboutMe(long id) 
+        public ActionResult AboutMe(long id)
         {
-            // Delete from db by hash
-            if (true) {
-                return Ok();
-            }
-            else {
+            var request = this.databaseContext.AboutMe.Where(element => element.Id == id).SingleOrDefault();
+
+            if (request == null) {
                 return NotFound();
             }
+
+            this.databaseContext.AboutMe.Remove((request));
+            this.databaseContext.SaveChanges();
+
+            return Ok();
         }
     }
 }
