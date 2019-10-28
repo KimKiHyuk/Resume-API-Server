@@ -10,6 +10,14 @@ services:
       ACCEPT_EULA: "Y"
     ports:
       - "1434:1434"
-
     volumes:
-      - './drive:/var/opt/mssql'
+      - './db_storage:/var/opt/mssql'
+
+  api-server:
+    build: 
+      context: ./docker/api-server
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+    depends_on:
+       - sql-server-db
