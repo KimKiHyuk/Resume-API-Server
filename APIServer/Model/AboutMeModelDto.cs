@@ -6,7 +6,9 @@ namespace APIServer.Model {
     [Table("AboutMe")]
     public class AboutMeModelDto : BaseModelDto
     {
-        
+        public AboutMeModelDto() {
+            
+        }
         public AboutMeModelDto(string Name, string Job, string Nationality, string Introduce) {
             this.Name = Name;
             this.Job = Job;
