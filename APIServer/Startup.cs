@@ -28,7 +28,7 @@ namespace APIServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DatabaseContext>(optionsAction: optionsBuilder => 
-            optionsBuilder.UseSqlServer(Configuration["ConnectionString"]));
+            optionsBuilder.UseSqlServer("Server=sql-server-db;Database=database_resume;User Id=sa;Password=1Secure*Password1"));
             services.AddControllers();
         }
 
