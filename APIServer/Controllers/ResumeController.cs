@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using APIServer.Database;
+using APIServer.Helper;
 using APIServer.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -25,7 +26,7 @@ namespace APIServer.Controllers
         [Route("{id}")]
         public ActionResult<AboutMeModelDto> AboutMe(int id)
         {
-            var request = this.databaseContext.TableAboutMe.Where(element => element.Id == id).SingleOrDefault();
+            var request = this.databaseContext.AboutMe.Where(element => element.Id == id).SingleOrDefault();
 
             if (request == null)
             {
@@ -36,20 +37,18 @@ namespace APIServer.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<AboutMeModelDto> AboutMe()
+        public IEnumerable<BaseJsonModel> AboutMe()
         {
-            return this.databaseContext.TableAboutMe.ToList();
+            return this.databaseContext.AboutMe.ToList();
         }
 
 
         [HttpPost]
         public ActionResult<AboutMeModelDto> AboutMe([FromBody] AboutMeModelDto dto)
         {
-            var jsonString = JsonSerializer.Serialize<AboutMeModelDto>(dto);
-
-            dto.HashCode = jsonString.GetHashCode();
+            var json = DtoJsonHelper.Dto2JsonModel<AboutMeModelDto>(dto);
             
-            var ret = this.databaseContext.TableAboutMe.Add(dto);
+            var ret = this.databaseContext.AboutMe.Add(json);
             this.databaseContext.SaveChanges();
 
             return CreatedAtAction("AboutMe", ret.Entity);
@@ -59,13 +58,13 @@ namespace APIServer.Controllers
         [Route("{id}")]
         public ActionResult AboutMe(long id)
         {
-            var request = this.databaseContext.TableAboutMe.Where(element => element.Id == id).SingleOrDefault();
+            var request = this.databaseContext.AboutMe.Where(element => element.Id == id).SingleOrDefault();
 
             if (request == null) {
                 return NotFound();
             }
 
-            this.databaseContext.TableAboutMe.Remove((request));
+            this.databaseContext.AboutMe.Remove((request));
             this.databaseContext.SaveChanges();
 
             return Ok();
