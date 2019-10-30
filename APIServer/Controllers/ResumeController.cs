@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 namespace APIServer.Controllers
 {
     [ApiController]
-    [Route("[controller]/[Action]")]
+    [Route("[controller]")]
     public class ResumeController : ControllerBase
     {
         private readonly DatabaseContext databaseContext;
@@ -23,8 +23,8 @@ namespace APIServer.Controllers
         }
 
         [HttpGet]
-        [Route("{id}")]
-        public ActionResult<AboutMeModelDto> AboutMe(int id)
+        [Route("AboutMe/{id}")]
+        public ActionResult<AboutMeModelDto> GetAboutMeById(int id)
         {
             var request = this.databaseContext.AboutMe.Where(element => element.Id == id).SingleOrDefault();
 
@@ -37,26 +37,50 @@ namespace APIServer.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<BaseJsonModel> AboutMe()
+        [Route("AboutMe/last")]
+        public ActionResult<AboutMeModelDto> GetAboutMeLast()
         {
-            return this.databaseContext.AboutMe.ToList();
+            var request = this.databaseContext.AboutMe.FirstOrDefault(element => element.Id == this.databaseContext.AboutMe.Max(element => element.Id));
+            
+            if (request == null)
+            {
+                return NotFound();
+            }
+
+            var dto = DtoJsonHelper.BaseJsonModel2Dto<AboutMeModelDto>(request);
+
+            return Ok(dto);
+        }
+
+        [HttpGet]
+        [Route("AboutMe")]
+        public IEnumerable<AboutMeModelDto> GetAboutMeAll()
+        {
+            var json = this.databaseContext.AboutMe.ToList();
+
+            if (json.Count <= 0) {
+                return new List<AboutMeModelDto>();
+            }
+
+            return DtoJsonHelper.BaseJsonModel2Dto<AboutMeModelDto>(json);
         }
 
 
         [HttpPost]
-        public ActionResult<AboutMeModelDto> AboutMe([FromBody] AboutMeModelDto dto)
+        [Route("AboutMe")]
+        public ActionResult<AboutMeModelDto> PostAboutMe([FromBody] AboutMeModelDto dto)
         {
             var json = DtoJsonHelper.Dto2JsonModel<AboutMeModelDto>(dto);
             
             var ret = this.databaseContext.AboutMe.Add(json);
             this.databaseContext.SaveChanges();
 
-            return CreatedAtAction("AboutMe", ret.Entity);
+            return CreatedAtAction("PostAboutMe", ret.Entity);
         }
 
         [HttpDelete]
-        [Route("{id}")]
-        public ActionResult AboutMe(long id)
+        [Route("AboutMe/{id}")]
+        public ActionResult DeleteAboutMeById(long id)
         {
             var request = this.databaseContext.AboutMe.Where(element => element.Id == id).SingleOrDefault();
 
