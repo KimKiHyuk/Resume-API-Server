@@ -17,6 +17,7 @@ namespace APIServer.Helper
         {
             return JsonSerializer.Deserialize<T>(model.Json);
         }
+        
         public static List<T> BaseJsonModel2Dto<T>(List<BaseJsonModel> models)
         {
             List<T> dto = new List<T>();

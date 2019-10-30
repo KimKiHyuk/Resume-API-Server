@@ -14,6 +14,7 @@ namespace APIServer.Database
             // TODO: set default value
         }
 
-        public DbSet<BaseJsonModel> AboutMe { get; set; }
+        public DbSet<BaseJsonModel> AboutMe { get; set; }    
+        public DbSet<BaseJsonModel> Career { get; set; }
     }
 }

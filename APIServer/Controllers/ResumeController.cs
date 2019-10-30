@@ -27,7 +27,7 @@ namespace APIServer.Controllers
         public ActionResult<AboutMeModelDto> GetAboutMeById(int id)
         {
             var request = this.databaseContext.AboutMe.Where(element => element.Id == id).SingleOrDefault();
-
+                
             if (request == null)
             {
                 return NotFound();
@@ -92,6 +92,36 @@ namespace APIServer.Controllers
             this.databaseContext.SaveChanges();
 
             return Ok();
+        }
+
+
+
+        [HttpGet]
+        [Route("Career/last")]
+        public ActionResult<CareerModelDto> GetCareerLast()
+        {
+            var request = this.databaseContext.Career.FirstOrDefault(element => element.Id == this.databaseContext.Career.Max(element => element.Id));
+            
+            if (request == null)
+            {
+                return NotFound();
+            }
+
+            var dto = DtoJsonHelper.BaseJsonModel2Dto<CareerModelDto>(request);
+
+            return Ok(dto);
+        }
+
+        [HttpPost]
+        [Route("Career")]
+        public ActionResult<CareerModelDto> PostCareer([FromBody] CareerModelDto dto)
+        {
+            var json = DtoJsonHelper.Dto2JsonModel<CareerModelDto>(dto);
+            
+            var ret = this.databaseContext.Career.Add(json);
+            this.databaseContext.SaveChanges();
+
+            return CreatedAtAction("PostCareer", ret.Entity);
         }
     }
 }
