@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using APIServer.Model;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,10 +13,11 @@ namespace APIServer.Database
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // TODO: set default value
         }
-
-        public DbSet<BaseJsonModel> AboutMe { get; set; }    
-        public DbSet<BaseJsonModel> Career { get; set; }
+        public DbSet<AboutMeModelDto> AboutMe { get; set; }
+        public DbSet<CareerModelDto> Career { get; set; }
+        public DbSet<EducationModelDto> Education { get; set; }
+        public DbSet<ProjectModelDto> Project { get; set; }
+        public DbSet<SkillModelDto> Skill { get; set; }
     }
 }

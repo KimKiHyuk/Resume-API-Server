@@ -23,11 +23,11 @@ namespace APIServer.Controllers
         }
 
         [HttpGet]
-        [Route("AboutMe/{id}")]
-        public ActionResult<AboutMeModelDto> GetAboutMeById(int id)
+        [Route("AboutMe/last")]
+        public ActionResult<AboutMeModelDto> GetLastAboutMe()
         {
-            var request = this.databaseContext.AboutMe.Where(element => element.Id == id).SingleOrDefault();
-                
+            var request = this.databaseContext.AboutMe.FirstOrDefault(element => element.Id == this.databaseContext.AboutMe.Max(element => element.Id));
+
             if (request == null)
             {
                 return NotFound();
@@ -36,92 +36,115 @@ namespace APIServer.Controllers
             return Ok(request);
         }
 
-        [HttpGet]
-        [Route("AboutMe/last")]
-        public ActionResult<AboutMeModelDto> GetAboutMeLast()
-        {
-            var request = this.databaseContext.AboutMe.FirstOrDefault(element => element.Id == this.databaseContext.AboutMe.Max(element => element.Id));
-            
-            if (request == null)
-            {
-                return NotFound();
-            }
-
-            var dto = DtoJsonHelper.BaseJsonModel2Dto<AboutMeModelDto>(request);
-
-            return Ok(dto);
-        }
-
-        [HttpGet]
-        [Route("AboutMe")]
-        public IEnumerable<AboutMeModelDto> GetAboutMeAll()
-        {
-            var json = this.databaseContext.AboutMe.ToList();
-
-            if (json.Count <= 0) {
-                return new List<AboutMeModelDto>();
-            }
-
-            return DtoJsonHelper.BaseJsonModel2Dto<AboutMeModelDto>(json);
-        }
-
-
         [HttpPost]
         [Route("AboutMe")]
         public ActionResult<AboutMeModelDto> PostAboutMe([FromBody] AboutMeModelDto dto)
         {
-            var json = DtoJsonHelper.Dto2JsonModel<AboutMeModelDto>(dto);
-            
-            var ret = this.databaseContext.AboutMe.Add(json);
+            var request = this.databaseContext.AboutMe.Add(dto);
             this.databaseContext.SaveChanges();
 
-            return CreatedAtAction("PostAboutMe", ret.Entity);
+            return CreatedAtAction("PostAboutMe", request.Entity);
         }
-
-        [HttpDelete]
-        [Route("AboutMe/{id}")]
-        public ActionResult DeleteAboutMeById(long id)
-        {
-            var request = this.databaseContext.AboutMe.Where(element => element.Id == id).SingleOrDefault();
-
-            if (request == null) {
-                return NotFound();
-            }
-
-            this.databaseContext.AboutMe.Remove((request));
-            this.databaseContext.SaveChanges();
-
-            return Ok();
-        }
-
 
 
         [HttpGet]
         [Route("Career/last")]
-        public ActionResult<CareerModelDto> GetCareerLast()
+        public ActionResult<CareerModelDto> GetLastCareer()
         {
             var request = this.databaseContext.Career.FirstOrDefault(element => element.Id == this.databaseContext.Career.Max(element => element.Id));
-            
+
             if (request == null)
             {
                 return NotFound();
             }
 
-            var dto = DtoJsonHelper.BaseJsonModel2Dto<CareerModelDto>(request);
-
-            return Ok(dto);
+            return Ok(request);
         }
 
         [HttpPost]
         [Route("Career")]
         public ActionResult<CareerModelDto> PostCareer([FromBody] CareerModelDto dto)
         {
-            var json = DtoJsonHelper.Dto2JsonModel<CareerModelDto>(dto);
-            
-            var ret = this.databaseContext.Career.Add(json);
+            var request = this.databaseContext.Career.Add(dto);
             this.databaseContext.SaveChanges();
 
-            return CreatedAtAction("PostCareer", ret.Entity);
+            return CreatedAtAction("PostCareer", request.Entity);
+        }
+
+        [HttpGet]
+        [Route("Education/last")]
+        public ActionResult<EducationModelDto> GetLastEducation()
+        {
+            var request = this.databaseContext.Education.FirstOrDefault(element => element.Id == this.databaseContext.Education.Max(element => element.Id));
+
+            if (request == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(request);
+        }
+
+        [HttpPost]
+        [Route("Education")]
+        public ActionResult<EducationModelDto> PostEducation([FromBody] EducationModelDto dto)
+        {
+            var request = this.databaseContext.Education.Add(dto);
+            this.databaseContext.SaveChanges();
+
+            return CreatedAtAction("PostEducation", request.Entity);
+        }
+
+        [HttpGet]
+        [Route("Project/last")]
+        public ActionResult<ProjectModelDto> GetLastProject()
+        {
+            var request = this.databaseContext.Project.FirstOrDefault(element => element.Id == this.databaseContext.Project.Max(element => element.Id));
+
+            if (request == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(request);
+        }
+
+        [HttpPost]
+        [Route("Project")]
+        public ActionResult<ProjectModelDto> PostProject([FromBody] ProjectModelDto dto)
+        {
+            var request = this.databaseContext.Project.Add(dto);
+            this.databaseContext.SaveChanges();
+
+            return CreatedAtAction("PostProject", request.Entity);
+        }
+
+        [HttpGet]
+        [Route("Skill/last")]
+        public ActionResult<BaseJsonModel> GetLastSkill()
+        {
+            var request = this.databaseContext.Skill.FirstOrDefault(element => element.Id == this.databaseContext.Skill.Max(element => element.Id));
+
+            request.HashTags = JsonSerializer.Deserialize<List<HashTag>>(request.SerializedHashTag);
+            if (request == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(request);
+        }
+
+        [HttpPost]
+        [Route("Skill")]
+        public ActionResult<BaseJsonModel> PostSkill([FromBody] SkillModelDto dto)
+        {
+
+            dto.SerializedHashTag = JsonSerializer.Serialize<List<HashTag>>(dto.HashTags);
+
+            var request = this.databaseContext.Skill.Add(dto);
+            this.databaseContext.SaveChanges();
+
+            return CreatedAtAction("PostSkill", request.Entity);
         }
     }
 }
