@@ -4,8 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace APIServer.Model
 {
-
-    [Table("Project")]
     public class ProjectModelDto
     {
 
@@ -21,19 +19,9 @@ namespace APIServer.Model
             this.Github = Github;
         }
 
-        [Key]
-        public int Id { get; set; }
-
-        [MaxLength(50)]
         public string Title { get; set; }
-
-        [MaxLengthAttribute]
         public string Description { get; set; }
-
-        [MaxLength(500)]
         public string DemoUrl { get; set; }
-
-        [MaxLength(500)]
         public string Github { get; set; }
     }
 }

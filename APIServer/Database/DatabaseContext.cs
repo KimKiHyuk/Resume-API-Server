@@ -14,10 +14,10 @@ namespace APIServer.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
         }
-        public DbSet<AboutMeModelDto> AboutMe { get; set; }
-        public DbSet<CareerModelDto> Career { get; set; }
-        public DbSet<EducationModelDto> Education { get; set; }
-        public DbSet<ProjectModelDto> Project { get; set; }
-        public DbSet<SkillModelDto> Skill { get; set; }
+        public DbSet<AboutMeDomainModel> AboutMe { get; set; }
+        public DbSet<CareerDomainModel> Career { get; set; }
+        public DbSet<EducationDomainModel> Education { get; set; }
+        public DbSet<ProjectDomainModel> Project { get; set; }
+        public DbSet<SkillDomainModel> Skill { get; set; }
     }
 }

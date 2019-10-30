@@ -6,23 +6,23 @@ namespace APIServer.Helper
 {
     public static class DtoJsonHelper
     {
-        public static BaseJsonModel Dto2JsonModel<T>(T dto)
+        public static JsonDomainModel Dto2JsonModel<T>(T dto)
         {
             var jsonString = JsonSerializer.Serialize<T>(dto);
 
-            return new BaseJsonModel(jsonString);
+            return new JsonDomainModel(jsonString);
         }
 
-        public static T BaseJsonModel2Dto<T>(BaseJsonModel model)
+        public static T JsonDomainModel2Dto<T>(JsonDomainModel model)
         {
             return JsonSerializer.Deserialize<T>(model.Json);
         }
         
-        public static List<T> BaseJsonModel2Dto<T>(List<BaseJsonModel> models)
+        public static List<T> JsonDomainModel2Dto<T>(List<JsonDomainModel> models)
         {
             List<T> dto = new List<T>();
             foreach(var model in models) {
-                dto.Add(BaseJsonModel2Dto<T>(model));
+                dto.Add(JsonDomainModel2Dto<T>(model));
             }
             return dto;
         }

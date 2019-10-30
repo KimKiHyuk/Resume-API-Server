@@ -2,9 +2,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace APIServer.Model
 {
-    public class BaseJsonModel
+    public class JsonDomainModel
     {
-        public BaseJsonModel(string Json) {
+        public JsonDomainModel() {
+            
+        }
+        public JsonDomainModel(string Json) {
             this.Json = Json;
             this.HashCode = this.Json.GetHashCode();
         }

@@ -3,8 +3,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace APIServer.Model
 {
-
-    [Table("Education")]
     public class EducationModelDto
     {
         public EducationModelDto()
@@ -18,19 +16,10 @@ namespace APIServer.Model
             this.Period = Period;
             this.Description = Description;
         }
-        [Key]
-        public int Id { get; set; }
 
-        [MaxLength(50)]
         public string Insititute { get; set; }
-
-        [MaxLength(50)]
         public string Type { get; set; }
-
-        [MaxLength(50)]
         public string Period { get; set; }
-
-        [MaxLengthAttribute]
         public string Description { get; set; }
     }
 }

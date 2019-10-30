@@ -27,20 +27,23 @@ namespace APIServer.Controllers
         public ActionResult<AboutMeModelDto> GetLastAboutMe()
         {
             var request = this.databaseContext.AboutMe.FirstOrDefault(element => element.Id == this.databaseContext.AboutMe.Max(element => element.Id));
-
             if (request == null)
             {
                 return NotFound();
             }
+            var dto = JsonSerializer.Deserialize<AboutMeModelDto>(request.Json);
 
-            return Ok(request);
+
+            return Ok(dto);
         }
 
         [HttpPost]
         [Route("AboutMe")]
         public ActionResult<AboutMeModelDto> PostAboutMe([FromBody] AboutMeModelDto dto)
         {
-            var request = this.databaseContext.AboutMe.Add(dto);
+            var json = JsonSerializer.Serialize<AboutMeModelDto>(dto);
+            var domain = new AboutMeDomainModel(json);
+            var request = this.databaseContext.AboutMe.Add(domain);
             this.databaseContext.SaveChanges();
 
             return CreatedAtAction("PostAboutMe", request.Entity);
@@ -52,20 +55,24 @@ namespace APIServer.Controllers
         public ActionResult<CareerModelDto> GetLastCareer()
         {
             var request = this.databaseContext.Career.FirstOrDefault(element => element.Id == this.databaseContext.Career.Max(element => element.Id));
-
             if (request == null)
             {
                 return NotFound();
             }
+            var dto = JsonSerializer.Deserialize<List<CareerModelDto>>(request.Json);
 
-            return Ok(request);
+
+            return Ok(dto);
         }
 
         [HttpPost]
         [Route("Career")]
-        public ActionResult<CareerModelDto> PostCareer([FromBody] CareerModelDto dto)
+        public ActionResult<List<CareerModelDto>> PostCareer([FromBody] List<CareerModelDto> dto)
         {
-            var request = this.databaseContext.Career.Add(dto);
+            var json = JsonSerializer.Serialize<List<CareerModelDto>>(dto);
+            var domain = new CareerDomainModel(json);
+
+            var request = this.databaseContext.Career.Add(domain);
             this.databaseContext.SaveChanges();
 
             return CreatedAtAction("PostCareer", request.Entity);
@@ -73,7 +80,7 @@ namespace APIServer.Controllers
 
         [HttpGet]
         [Route("Education/last")]
-        public ActionResult<EducationModelDto> GetLastEducation()
+        public ActionResult<List<EducationModelDto>> GetLastEducation()
         {
             var request = this.databaseContext.Education.FirstOrDefault(element => element.Id == this.databaseContext.Education.Max(element => element.Id));
 
@@ -82,14 +89,20 @@ namespace APIServer.Controllers
                 return NotFound();
             }
 
-            return Ok(request);
+
+            var dto = JsonSerializer.Deserialize<List<EducationModelDto>>(request.Json);
+
+            return Ok(dto);
         }
 
         [HttpPost]
         [Route("Education")]
-        public ActionResult<EducationModelDto> PostEducation([FromBody] EducationModelDto dto)
+        public ActionResult<List<EducationModelDto>> PostEducation([FromBody] List<EducationModelDto> dto)
         {
-            var request = this.databaseContext.Education.Add(dto);
+            var json = JsonSerializer.Serialize<List<EducationModelDto>>(dto);
+            var domain = new EducationDomainModel(json);
+
+            var request = this.databaseContext.Education.Add(domain);
             this.databaseContext.SaveChanges();
 
             return CreatedAtAction("PostEducation", request.Entity);
@@ -97,7 +110,7 @@ namespace APIServer.Controllers
 
         [HttpGet]
         [Route("Project/last")]
-        public ActionResult<ProjectModelDto> GetLastProject()
+        public ActionResult<List<ProjectModelDto>> GetLastProject()
         {
             var request = this.databaseContext.Project.FirstOrDefault(element => element.Id == this.databaseContext.Project.Max(element => element.Id));
 
@@ -106,14 +119,19 @@ namespace APIServer.Controllers
                 return NotFound();
             }
 
-            return Ok(request);
+            var dto = JsonSerializer.Deserialize<List<ProjectModelDto>>(request.Json);
+
+
+            return Ok(dto);
         }
 
         [HttpPost]
         [Route("Project")]
-        public ActionResult<ProjectModelDto> PostProject([FromBody] ProjectModelDto dto)
+        public ActionResult<List<ProjectModelDto>> PostProject([FromBody] List<ProjectModelDto> dto)
         {
-            var request = this.databaseContext.Project.Add(dto);
+            var json = JsonSerializer.Serialize<List<ProjectModelDto>>(dto);
+            var domain = new ProjectDomainModel(json);
+            var request = this.databaseContext.Project.Add(domain);
             this.databaseContext.SaveChanges();
 
             return CreatedAtAction("PostProject", request.Entity);
@@ -121,27 +139,30 @@ namespace APIServer.Controllers
 
         [HttpGet]
         [Route("Skill/last")]
-        public ActionResult<BaseJsonModel> GetLastSkill()
+        public ActionResult<List<SkillModelDto>> GetLastSkill()
         {
             var request = this.databaseContext.Skill.FirstOrDefault(element => element.Id == this.databaseContext.Skill.Max(element => element.Id));
 
-            request.HashTags = JsonSerializer.Deserialize<List<HashTag>>(request.SerializedHashTag);
             if (request == null)
             {
                 return NotFound();
             }
 
-            return Ok(request);
+            var dto = JsonSerializer.Deserialize<List<SkillModelDto>>(request.Json);
+
+
+            return Ok(dto);
         }
 
         [HttpPost]
         [Route("Skill")]
-        public ActionResult<BaseJsonModel> PostSkill([FromBody] SkillModelDto dto)
+        public ActionResult<List<SkillModelDto>> PostSkill([FromBody] List<SkillModelDto> dto)
         {
 
-            dto.SerializedHashTag = JsonSerializer.Serialize<List<HashTag>>(dto.HashTags);
+            var json = JsonSerializer.Serialize<List<SkillModelDto>>(dto);
+            var domain = new SkillDomainModel(json);
 
-            var request = this.databaseContext.Skill.Add(dto);
+            var request = this.databaseContext.Skill.Add(domain);
             this.databaseContext.SaveChanges();
 
             return CreatedAtAction("PostSkill", request.Entity);
