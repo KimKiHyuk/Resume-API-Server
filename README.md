@@ -13,5 +13,5 @@
 * Xunit UnitTest
 
 ## Deploy
-* Docker
+* Docker-compose
 
