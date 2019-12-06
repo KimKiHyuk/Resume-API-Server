@@ -11,17 +11,19 @@ namespace APIServer.Model
         {
 
         }
-        public ProjectModelDto(string Title, string Description, string DemoUrl, string Github)
+        public ProjectModelDto(string Category, string Title, string Subtitle, string Github, string Color)
         {
+            this.Category = Category;
             this.Title = Title;
-            this.Description = Description;
-            this.DemoUrl = DemoUrl;
+            this.Subtitle = Subtitle;
             this.Github = Github;
+            this.Color = Color;
         }
 
+        public string Category { get; set; }
         public string Title { get; set; }
-        public string Description { get; set; }
-        public string DemoUrl { get; set; }
+        public string Subtitle { get; set; }
+        public string Color { get; set; }
         public string Github { get; set; }
     }
 }

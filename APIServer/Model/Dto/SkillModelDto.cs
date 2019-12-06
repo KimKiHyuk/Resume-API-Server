@@ -12,16 +12,16 @@ namespace APIServer.Model
         {
 
         }
-        public SkillModelDto(string Name, string ImageUrl, int Proficiency, List<HashTag> HashTags)
+        public SkillModelDto(string Name, string ImageSource, int Proficiency, List<HashTag> HashTags)
         {
             this.Name = Name;
-            this.ImageUrl = ImageUrl;
+            this.ImageSource = ImageSource;
             this.Proficiency = Proficiency;
             this.HashTags = HashTags;
         }
 
         public string Name { get; set; }
-        public string ImageUrl { get; set; }
+        public string ImageSource { get; set; }
 
         public int Proficiency { get; set; }
 
