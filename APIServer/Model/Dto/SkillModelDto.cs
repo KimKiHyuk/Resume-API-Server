@@ -30,6 +30,10 @@ namespace APIServer.Model
 
     public class HashTag
     {
+        public HashTag(string Tag)
+        {
+            this.Tag = Tag;
+        }
         public string Tag { get; set; }
     }
 }

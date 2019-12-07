@@ -8,9 +8,12 @@ namespace APIServer.Model
     [Table("Career")]
     public class CareerModelDto
     {
-        public CareerModelDto()
+        public CareerModelDto(string Company, string Experience, string Period, string Position)
         {
-
+            this.Company = Company;
+            this.Experience = Experience;
+            this.Period = Period;
+            this.Position = Position;
         }
 
         public string Company { get; set; }
