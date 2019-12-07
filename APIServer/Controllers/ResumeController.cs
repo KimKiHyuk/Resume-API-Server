@@ -26,12 +26,15 @@ namespace APIServer.Controllers
         [Route("AboutMe/last")]
         public ActionResult<AboutMeModelDto> GetLastAboutMe()
         {
-            var request = this.databaseContext.AboutMe.FirstOrDefault(element => element.Id == this.databaseContext.AboutMe.Max(element => element.Id));
+            // var request = this.databaseContext.AboutMe.FirstOrDefault(element => element.Id == this.databaseContext.AboutMe.Max(element => element.Id));
+            var request = new AboutMeModelDto("kim", "hi", "student", "https://avatars1.githubusercontent.com/u/32787543?s=460&v=4", "hello"));
             if (request == null)
             {
                 return NotFound();
             }
-            var dto = JsonSerializer.Deserialize<AboutMeModelDto>(request.Json);
+
+            var mockDb = JsonSerializer.Serialize<AboutMeModelDto>(request);
+            var dto = JsonSerializer.Deserialize<AboutMeModelDto>(mockDb);
 
 
             return Ok(dto);
