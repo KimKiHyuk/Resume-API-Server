@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using APIServer.HTTP;
 
 namespace APIServer
 {
@@ -29,6 +30,13 @@ namespace APIServer
         {
             services.AddDbContext<DatabaseContext>(optionsAction: optionsBuilder => 
             optionsBuilder.UseSqlServer(Configuration["ConnectionString"]));
+            services.AddHttpClient();
+            services.AddSingleton<IHTTPHelper, HTTPHelper>();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowOrigin",
+                    builder => builder.AllowAnyOrigin());
+            });
             services.AddControllers();
         }
 
@@ -45,6 +53,8 @@ namespace APIServer
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors("AllowOrigin");
 
             app.UseEndpoints(endpoints =>
             {
