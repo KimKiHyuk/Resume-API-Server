@@ -1,5 +1,9 @@
 # Vuetiful-Resume backend API server
 
+<img src="resume_project_image.PNG">
+
+
+
 # Tools
 * VSCode
 
@@ -14,4 +18,5 @@
 
 ## Deploy
 * Docker-compose
+* Azure appservice
 
