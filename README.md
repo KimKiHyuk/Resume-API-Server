@@ -1,3 +1,4 @@
+[![Build Status](https://dev.azure.com/keyhyukkim/keyhyukkim/_apis/build/status/KimKiHyuk.Resume-API-Server?branchName=master)](https://dev.azure.com/keyhyukkim/keyhyukkim/_build/latest?definitionId=1&branchName=master)
 # Vuetiful-Resume backend API server
 
 <img src="resume_project_image.PNG">
